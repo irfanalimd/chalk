@@ -188,3 +188,38 @@ def grid(opacity=0.35, step=0.5):
         axis_config={"stroke_opacity": 0},
         faded_line_ratio=1,
     )
+
+
+# ── paper helpers (long mode) ────────────────────────────────────────────────
+def _paper_path():
+    proj = json.loads((ROOT / "project.json").read_text())
+    return ROOT / proj.get("paper", "research/paper.pdf")
+
+
+def pdf_png(page, clip=None, dpi=300, name=None):
+    """Render page (0-based) of the project's paper, optionally a clip rect (x0, y0, x1, y1) in PDF
+    points, to assets/img/<name>.png (cached) and return the path."""
+    import pymupdf
+    name = name or f"paper_p{page}" + ("_" + "_".join(str(int(v)) for v in clip) if clip else "")
+    out = ROOT / f"assets/img/{name}.png"
+    if not out.exists():
+        pg = pymupdf.open(str(_paper_path()))[page]
+        pix = pg.get_pixmap(dpi=dpi, clip=pymupdf.Rect(*clip) if clip else None)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        pix.save(str(out))
+    return out
+
+
+def paper_card(path, height=5.0):
+    """A paper crop as a white sheet with a soft shadow."""
+    img = ImageMobject(str(path)).set_height(height)
+    shadow = Rectangle(width=img.width + 0.12, height=img.height + 0.12, stroke_width=0,
+                       fill_color=BLACK, fill_opacity=0.55).shift(DOWN * 0.08 + RIGHT * 0.06)
+    return Group(shadow, img)
+
+
+def math_text(markup, size=40, color=INK):
+    """Math without LaTeX, as Pango markup: math_text('softmax(<i>QK</i><sup>T</sup> / √<i>d</i><sub>k</sub>) <i>V</i>').
+    Do not use Unicode sub/superscript characters (ₖ, ᵀ): CMU Serif lacks most of them and draws empty
+    boxes. Check ≈ and ≡ too; draw them as shapes if they look wrong."""
+    return MarkupText(markup, font=SERIF, font_size=size, color=color)

@@ -1,11 +1,18 @@
 # chalk
 
-A Claude Code plugin that turns a source link (an announcement, a paper, a blog post) into a 2–3
-minute narrated explainer in the style of 3Blue1Brown: Manim animation on a dark canvas, an ElevenLabs
-voice, a score, a few seconds of real footage, and word-timed captions, rendered at 1920×1080, 60 fps.
+A Claude Code plugin that turns a source link (an announcement, a paper, a blog post) into a narrated
+explainer in the style of 3Blue1Brown: Manim animation on a dark canvas, an ElevenLabs voice, a score,
+real footage or paper figures, and word-timed captions, rendered at 1920×1080, 60 fps.
 
-It was built while making a video about OpenAI's October 2026 local smoothing / Kakeya result. That
-project is included as `examples/needle-problem/`.
+Two modes:
+
+- **short** (default): 2–3 minutes on why a result matters. Example: `examples/needle-problem/`, a video
+  about OpenAI's October 2026 local smoothing / Kakeya result.
+- **long**: 8–10 minutes, a chapter-by-chapter reading of a whole paper. Example:
+  `examples/attention-paper/`, "Attention Is All You Need" (Vaswani et al., 2017).
+
+Ask for long mode in the prompt ("long", "deep dive", "explain the entire paper", or an 8–10 minute
+target), or set `"mode": "long"` in `project.json`.
 
 ## What it does
 
@@ -49,6 +56,14 @@ Create a video explaining this announcement: <url>. Use the chalk skill. 3Blue1B
 people with a basic STEM degree rather than a maths background. 2 to 2.5 minutes. The goal is to
 show how big and impressive the result is, not to explain every detail. Use my ElevenLabs key for
 the voice and music. Ask me questions first if anything is unclear.
+```
+
+Long mode:
+
+```
+Make a long chalk video, 8 to 10 minutes, explaining the entire "Attention Is All You Need" paper
+(https://arxiv.org/abs/1706.03762). Use paper figures where they help. Spawn subagents for the scenes.
+Publish it to my site when it is done.
 ```
 
 Shorter ones:
@@ -119,7 +134,7 @@ venv python.
 
 | Step | Command | Output |
 |---|---|---|
-| Scaffold | `python new_project.py ~/videos/<topic>` | project skeleton |
+| Scaffold | `python new_project.py ~/videos/<topic> [--long]` | project skeleton (`--long` adds chapter cards) |
 | Setup | `bash setup.sh ~/videos/<topic>` | `.venv`, fonts, `.env` |
 | Voice | `python tts.py` | `build/audio/*.wav`, `build/timing.json` |
 | Scenes | `python render_scenes.py [ids] [--preview]` | `build/manim/...`, length check per beat |
@@ -128,6 +143,7 @@ venv python.
 | Assemble | `python assemble.py [--draft]` | `build/edit.otio`, `build/master.mp4` |
 | Captions | `python captions.py build/master.mp4 build/final.mp4` | `build/final.mp4`, `build/captions.srt` |
 | Check | `python critic.py build/final.mp4` | `build/critic/report.md`, contact sheets |
+| Web | `python web.py build/final.mp4 --slug <slug>` | `build/web/<slug>.html`, `build/web/media/<slug>.mp4` (< 100 MB), poster |
 
 `common.py` prints the beat plan. `sheet.py <video> <out.png> [n]` makes a contact sheet.
 
@@ -150,12 +166,16 @@ versions/vN/            delivered versions with their sources
 
 - 16:9 only. Vertical output would need a second frame configuration.
 - Narration is English; caption alignment uses `small.en`.
+- Long mode has been run once (the Transformer paper); chapter count and pacing rules come from that run.
 - Scene code is written per video. The skill provides the style, timing and checks, not a library of
   ready-made scenes (apart from what the example shows).
 - Fair use of third-party clips is the user's call; the skill records sources and credits them.
 
-## Example
+## Examples
 
-`examples/needle-problem/` holds the script, narration settings, `project.json` and all Manim scenes
-for "The Needle Problem" (2:43). Media and research files are not committed; `assets.md` lists their
-sources.
+- `examples/needle-problem/`: short mode, "The Needle Problem" (2:43).
+- `examples/attention-paper/`: long mode, "Attention Is All You Need" (about 9.5 minutes), including
+  the `BRIEF.md` that five scene-builder agents worked from in parallel.
+
+Each holds the script, narration settings, `project.json` and all Manim scenes. Media and research
+files are not committed; `assets.md` lists their sources.

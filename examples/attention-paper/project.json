@@ -1,0 +1,150 @@
+{
+  "title": "Attention Is All You Need",
+  "bg": "#0B0D12",
+  "mode": "long",
+  "beats": [
+    {
+      "id": "c0_open",
+      "scene": "c0_open.py:C0Open"
+    },
+    {
+      "id": "title",
+      "scene": "cards.py:Title",
+      "dur": 3.4
+    },
+    {
+      "id": "ch1",
+      "scene": "cards.py:Ch1",
+      "dur": 2.6
+    },
+    {
+      "id": "c1_rnn",
+      "scene": "c1_rnn.py:C1RNN"
+    },
+    {
+      "id": "ch2",
+      "scene": "cards.py:Ch2",
+      "dur": 2.6
+    },
+    {
+      "id": "c2_attention",
+      "scene": "c2_attention.py:C2Attention"
+    },
+    {
+      "id": "ch3",
+      "scene": "cards.py:Ch3",
+      "dur": 2.6
+    },
+    {
+      "id": "c3_scaled",
+      "scene": "c3_scaled.py:C3Scaled"
+    },
+    {
+      "id": "ch4",
+      "scene": "cards.py:Ch4",
+      "dur": 2.6
+    },
+    {
+      "id": "c4_heads",
+      "scene": "c4_heads.py:C4Heads"
+    },
+    {
+      "id": "ch5",
+      "scene": "cards.py:Ch5",
+      "dur": 2.6
+    },
+    {
+      "id": "c5_position",
+      "scene": "c5_position.py:C5Position"
+    },
+    {
+      "id": "ch6",
+      "scene": "cards.py:Ch6",
+      "dur": 2.6
+    },
+    {
+      "id": "c6_arch",
+      "scene": "c6_arch.py:C6Arch"
+    },
+    {
+      "id": "ch7",
+      "scene": "cards.py:Ch7",
+      "dur": 2.6
+    },
+    {
+      "id": "c7_why",
+      "scene": "c7_why.py:C7Why"
+    },
+    {
+      "id": "ch8",
+      "scene": "cards.py:Ch8",
+      "dur": 2.6
+    },
+    {
+      "id": "c8_results",
+      "scene": "c8_results.py:C8Results"
+    },
+    {
+      "id": "ch9",
+      "scene": "cards.py:Ch9",
+      "dur": 2.6
+    },
+    {
+      "id": "c9_legacy",
+      "scene": "c9_legacy.py:C9Legacy"
+    },
+    {
+      "id": "end",
+      "scene": "cards.py:End",
+      "dur": 5.0
+    }
+  ],
+  "chapters": {
+    "ch1": "Reading one word at a time",
+    "ch2": "Attention as a soft lookup",
+    "ch3": "Scaled dot-product attention",
+    "ch4": "Many heads",
+    "ch5": "Where is each word?",
+    "ch6": "The Transformer",
+    "ch7": "Why self-attention",
+    "ch8": "Training and results",
+    "ch9": "What came next"
+  },
+  "music": {
+    "gain_db": -11,
+    "library": {
+      "level_lufs": -21,
+      "xfade": 3.0,
+      "cues": [
+        {
+          "file": "assets/music/Clean_Soul.mp3",
+          "in": 0
+        },
+        {
+          "file": "assets/music/Dreamer.mp3",
+          "in": 0,
+          "at_beat": "ch4"
+        },
+        {
+          "file": "assets/music/Healing.mp3",
+          "in": 0,
+          "at_beat": "ch6"
+        },
+        {
+          "file": "assets/music/Inspired.mp3",
+          "in": 0,
+          "at_beat": "ch8"
+        }
+      ]
+    }
+  },
+  "inserts": {},
+  "overlays": [],
+  "captions": {
+    "font": "Avenir Next",
+    "fontsdir": "/System/Library/Fonts"
+  },
+  "paper": "research/attention.pdf",
+  "source": "Vaswani et al., “Attention Is All You Need”, NeurIPS 2017 · arXiv:1706.03762",
+  "credits": "Figures and tables reproduced from the paper with attribution, as permitted for scholarly use · Music: Kevin MacLeod (incompetech.com), CC BY 4.0"
+}

@@ -1,6 +1,6 @@
 ---
 name: chalk
-description: Produce a narrated, 3Blue1Brown-style explainer video (Manim animation, ElevenLabs voice and music, real footage inserts, word-timed captions) about a research result, announcement or technical idea, from source links to a finished 1080p60 MP4. Use when someone asks for an explainer video, a math/science/AI breakthrough video, a "3b1b-style" animation with narration, or wants to turn a paper, blog post or announcement into a short video.
+description: Produce a narrated, 3Blue1Brown-style explainer video (Manim animation, ElevenLabs voice and music, real footage inserts, word-timed captions) about a research result, announcement, paper or technical idea, from source links to a finished 1080p60 MP4 and an optional web page. Two modes - short (2-3 min, "how big is this") and long (8-10 min guided reading of a whole paper, triggered by "long", "deep dive", "full paper" or an 8-10 minute target). Use when someone asks for an explainer video, a math/science/AI breakthrough video, a "3b1b-style" animation with narration, or wants to turn a paper, blog post or announcement into a video.
 ---
 
 # chalk
@@ -19,6 +19,19 @@ directory, or set `CHALK_PROJECT`). Read the reference for a stage before doing 
 | Manim scenes, the timing API, scene-builder briefs | `references/scenes.md` |
 | real footage and stills | `references/footage.md` |
 | assembly, captions, critic, revisions | `references/finishing.md` |
+| long mode (8–10 min, whole paper, chapters, web page) | `references/long.md` |
+
+## Modes
+
+| | short (default) | long |
+|---|---|---|
+| Trigger | default | "long", "deep dive", "full paper", "explain the entire paper", an 8–10 min target, or `"mode": "long"` |
+| Length | 2–3 min, ~370 words | 8–10 min, ~1,350–1,500 words |
+| Goal | how significant the result is | how the paper works, chapter by chapter |
+| Structure | 6 sections, one title card | opening, title, 7–9 chapters each with a chapter card |
+| Scaffold | `new_project.py <dir>` | `new_project.py <dir> --long` (adds `cards.py`) |
+| Scenes | 1–4 scene-builder agents | write `script/BRIEF.md`, then ~5 agents with two sections each |
+| Footage | one or two real clips | paper figures and tables (check the paper's permission line) |
 
 ## Workflow
 
@@ -42,7 +55,9 @@ directory, or set `CHALK_PROJECT`). Read the reference for a stage before doing 
 8. **Assemble, caption, critique.** `assemble.py` → `captions.py build/master.mp4 build/final.mp4` →
    `critic.py build/final.mp4`. Read the report and look at the sheets yourself; fix and repeat until
    the report has no issues and nothing on the sheets is clipped, overlapping or empty for long.
-9. **Deliver** `<Title>.mp4`, a no-captions master and the `.srt`. On every later revision, first copy
+9. **Deliver** `<Title>.mp4`, a no-captions master and the `.srt`. To publish on a website, run
+   `web.py build/final.mp4 --slug <slug>` (compact encode under 100 MB, poster, HTML page with chapter
+   links) and follow the site's own publishing instructions (e.g. its `llms.txt`). On every later revision, first copy
    the delivered files and sources into `versions/vN/`, then deliver under a new name (`_v2`, …).
 
 ## Rules that matter

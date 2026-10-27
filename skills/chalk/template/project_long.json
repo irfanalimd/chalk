@@ -1,0 +1,29 @@
+{
+  "title": "Paper Title",
+  "mode": "long",
+  "kicker": "A guided reading",
+  "byline": "Author · Author · Author  ·  Year",
+  "source": "Author et al., Venue Year  ·  arXiv:XXXX.XXXXX",
+  "credits": "Figures reproduced from the paper with attribution  ·  Music: ... (CC BY 4.0)",
+  "paper": "research/paper.pdf",
+  "bg": "#0B0D12",
+  "beats": [
+    {"id": "c0_open", "scene": "c0_open.py:C0Open"},
+    {"id": "title", "scene": "cards.py:Title", "dur": 3.4},
+    {"id": "ch1", "scene": "cards.py:Ch1", "dur": 2.6},
+    {"id": "c1_problem", "scene": "c1_problem.py:C1Problem"},
+    {"id": "ch2", "scene": "cards.py:Ch2", "dur": 2.6},
+    {"id": "c2_idea", "scene": "c2_idea.py:C2Idea"},
+    {"id": "end", "scene": "cards.py:End", "dur": 5.0}
+  ],
+  "chapters": {"ch1": "The problem", "ch2": "The core idea"},
+  "music": {
+    "gain_db": -11,
+    "library": {"level_lufs": -21, "xfade": 3.0,
+                "cues": [{"file": "assets/music/a.mp3", "in": 0},
+                         {"file": "assets/music/b.mp3", "in": 0, "at_beat": "ch2"}]}
+  },
+  "inserts": {},
+  "overlays": [],
+  "captions": {"font": "Avenir Next", "fontsdir": "/System/Library/Fonts"}
+}

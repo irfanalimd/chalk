@@ -43,8 +43,9 @@ optional flourishes conditional on the time left (`room = c.at("turn it") - self
 
 ## Gotchas
 
-- No LaTeX: `MathTex`, `Tex`, `DecimalNumber`, `Integer`, `Variable` fail. Use `Text`/`MarkupText`
-  and rebuild numbers with `always_redraw` when they must animate.
+- No LaTeX: `MathTex`, `Tex`, `DecimalNumber`, `Integer`, `Variable`, `Matrix` fail. Use `Text`/`MarkupText`
+  and rebuild numbers with `always_redraw` when they must animate. Formulas: `math_text()` with
+  `<sub>`/`<sup>`/`<i>` markup; Unicode subscript characters (ₖ) render as empty boxes in CMU Serif.
 - Pillow ≥ 11.3 breaks `ImageMobject` ("Invalid mode for data type"); pin `pillow<11.3`.
 - Grayscale images: convert to RGB first (and tint with PIL), `set_color` on an L-mode image fails.
 - Register fonts with `manimpango.register_font` (style.py does it for `assets/fonts/*.otf`).

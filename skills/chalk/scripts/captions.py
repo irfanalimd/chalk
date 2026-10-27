@@ -17,7 +17,7 @@ import numpy as np
 
 from asr import transcribe
 
-from common import ROOT, ffmpeg, load_narration, load_project
+from common import ROOT, beats, ffmpeg, load_narration, load_project
 
 FFMPEG = ffmpeg()
 CAP = load_project().get("captions", {})  # {"font": "Avenir Next", "fontsdir": "/System/Library/Fonts"}
@@ -45,20 +45,45 @@ def asr_words(media):
     return out
 
 
-def correct(asr, script_text):
-    """Replace ASR spellings with script spellings wherever the alignment is confident, and drop
-    words the script never says (whisper hallucinates phrases like "Thank you." in silence)."""
-    script = script_text.split()
-    a, s = [norm(w["word"]) for w in asr], [norm(w) for w in script]
+def planned_words():
+    """Script words with their planned times (TTS alignment + beat offsets), or None if unavailable."""
+    tp = ROOT / "build/timing.json"
+    if not tp.exists():
+        return None
+    timing = json.loads(tp.read_text())
     out = []
+    for b in beats():
+        if "audio" in b:
+            out += [{"word": w["word"], "start": b["voice_start"] + w["start"], "end": b["voice_start"] + w["end"]}
+                    for w in timing["sections"][b["id"]]["words"]]
+    return out
+
+
+def correct(asr, script_text, planned=None):
+    """Replace ASR spellings with script spellings wherever the alignment is confident, drop words the
+    script never says (whisper hallucinates phrases like "Thank you." in silence), and fill script words
+    whisper skipped (it occasionally drops a whole segment) from the planned TTS timings."""
+    script = script_text.split()
+    if planned is not None and len(planned) != len(script):
+        planned = None  # tokenisation differs; can't map by index
+    a, s = [norm(w["word"]) for w in asr], [norm(w) for w in script]
+    out, filled = [], 0
     for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, s, autojunk=False).get_opcodes():
         if op == "delete":
+            continue
+        if op == "insert" or (op == "replace" and (j2 - j1) - (i2 - i1) >= 3):
+            if planned is not None:
+                out += [dict(planned[j], word=script[j]) for j in range(j1, j2)]
+                filled += j2 - j1
             continue
         for k in range(i2 - i1):
             w = dict(asr[i1 + k])
             if (op == "equal" or i2 - i1 == j2 - j1) and not re.search(r"\d", w["word"]):
                 w["word"] = script[j1 + k]
             out.append(w)
+    if filled:
+        print(f"filled {filled} words whisper skipped from planned timings")
+    out.sort(key=lambda w: w["start"])
     return out
 
 
@@ -165,7 +190,7 @@ def write_srt(groups, path):
 def main(src, dst):
     cfg = load_narration()
     script = " ".join(s["text"] for s in cfg["sections"])
-    words = correct(asr_words(src), script)
+    words = correct(asr_words(src), script, planned_words())
     (ROOT / "build/captions_words.json").write_text(json.dumps(words, indent=1))
     groups = lines(words)
     ass, srt = ROOT / "build/captions.ass", ROOT / "build/captions.srt"
