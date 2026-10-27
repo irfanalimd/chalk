@@ -1,6 +1,6 @@
 """House style shared by every scene: palette, type, glow, and narration-locked timing.
 
-Timing model: each scene is one beat of pipeline/plan.py. `Cues(beat_id)` reads word times from
+Timing model: each scene is one beat in project.json. `Cues(beat_id)` reads word times from
 build/timing.json (already offset by the lead-in), so scene code says *what word* an animation lands
 on, never a hand-typed second:
 
