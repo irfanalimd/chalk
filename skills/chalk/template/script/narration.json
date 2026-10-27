@@ -1,0 +1,13 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George",
+  "model_id": "eleven_multilingual_v2",
+  "voice_settings": {"stability": 0.55, "similarity_boost": 0.8, "style": 0.2, "use_speaker_boost": true, "speed": 0.97},
+  "lead_in": 0.5,
+  "tail": 1.0,
+  "sections": [
+    {"id": "s1_hook", "text": "Replace with the opening section of the approved script."},
+    {"id": "s2_idea", "text": "Replace with the next section."}
+  ],
+  "pauses": []
+}

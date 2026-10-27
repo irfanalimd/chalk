@@ -1,0 +1,11 @@
+{
+  "name": "chalk",
+  "owner": {"name": "irfanalimd"},
+  "plugins": [
+    {
+      "name": "chalk",
+      "source": "./",
+      "description": "Narrated 3Blue1Brown-style explainer videos from a source link."
+    }
+  ]
+}

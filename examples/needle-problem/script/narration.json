@@ -1,0 +1,102 @@
+{
+  "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+  "voice_name": "George",
+  "model_id": "eleven_multilingual_v2",
+  "voice_settings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.2,
+    "use_speaker_boost": true,
+    "speed": 0.97
+  },
+  "lead_in": 0.5,
+  "tail": 1.0,
+  "sections": [
+    {
+      "id": "s1_puzzle",
+      "text": "In nineteen seventeen, the mathematician Sōichi Kakeya asked a question that sounds like a puzzle for children. Imagine a needle lying on a table. What is the smallest region in which you can turn it all the way around?"
+    },
+    {
+      "id": "s2_area",
+      "text": "Spinning it about its centre sweeps out a disc, and a curved, three-pointed shape called a deltoid manages with half the area. But then Abram Besicovitch showed something unsettling, which is that there is no smallest area at all: by slicing the motion into ever thinner slivers and sliding them over one another, you can make the area as close to zero as you like."
+    },
+    {
+      "id": "s3_conjecture",
+      "text": "So mathematicians asked a subtler question. A set that holds a needle pointing in every direction can have almost no area, but can it truly be thin? The Kakeya conjecture says it cannot, and that, measured by dimension, a finer notion of size, it must fill out the space it lives in. In the plane this was settled long ago, and in three dimensions it was proven only last year, by Hong Wang and Joshua Zahl, in work that helped earn Wang a Fields Medal this summer. Beyond that, it remained open."
+    },
+    {
+      "id": "s4_waves",
+      "text": "Kakeya turns out to be the shadow of a deeper question about waves. When a wave converges, its energy can pile up into an intense peak, and in the early nineties Christopher Sogge conjectured that this extreme focusing can only last an instant, so that on average a wave is far gentler than at its worst. Prove this local smoothing conjecture, and the Kakeya conjecture follows, along with Stein's restriction conjecture. Even in two dimensions, it was only proven in twenty nineteen."
+    },
+    {
+      "id": "s5_result",
+      "text": "Today, OpenAI announced that its models have produced a proof of local smoothing in every dimension, built on a new kind of auxiliary equation, which would settle Kakeya and restriction in every dimension at once. The day after the proof appeared, it had been formalized in Lean, a language in which a computer checks each logical step."
+    },
+    {
+      "id": "s6_close",
+      "text": "The mathematical community has only begun to verify it, and that will take time. But consider what is being claimed: a problem that has been climbed one dimension at a time, by some of the finest analysts alive, carried all the way to the top in a single proof written by a machine. And it was one of three such results announced today."
+    }
+  ],
+  "pauses": [
+    {
+      "section": "s1_puzzle",
+      "after": "for children",
+      "sec": 0.45
+    },
+    {
+      "section": "s1_puzzle",
+      "after": "on a table",
+      "sec": 0.35
+    },
+    {
+      "section": "s2_area",
+      "after": "half the area",
+      "sec": 0.6
+    },
+    {
+      "section": "s3_conjecture",
+      "after": "subtler question",
+      "sec": 0.4
+    },
+    {
+      "section": "s3_conjecture",
+      "after": "it lives in",
+      "sec": 0.6
+    },
+    {
+      "section": "s3_conjecture",
+      "after": "Medal this summer",
+      "sec": 0.45
+    },
+    {
+      "section": "s4_waves",
+      "after": "about waves",
+      "sec": 0.5
+    },
+    {
+      "section": "s4_waves",
+      "after": "at its worst",
+      "sec": 0.6
+    },
+    {
+      "section": "s4_waves",
+      "after": "restriction conjecture",
+      "sec": 0.45
+    },
+    {
+      "section": "s5_result",
+      "after": "at once",
+      "sec": 0.6
+    },
+    {
+      "section": "s6_close",
+      "after": "take time",
+      "sec": 0.7
+    },
+    {
+      "section": "s6_close",
+      "after": "by a machine",
+      "sec": 0.6
+    }
+  ]
+}

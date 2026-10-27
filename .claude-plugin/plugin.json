@@ -1,0 +1,6 @@
+{
+  "name": "chalk",
+  "version": "0.1.0",
+  "description": "Narrated 3Blue1Brown-style explainer videos from a source link: Manim scenes, ElevenLabs voice and music, real footage inserts, word-timed captions, automated QA.",
+  "author": {"name": "irfanalimd"}
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Working title",
+  "bg": "#0B0D12",
+  "beats": [
+    {"id": "s1_hook", "scene": "s1_hook.py:S1Hook"},
+    {"id": "title", "scene": "title.py:Title", "dur": 2.8},
+    {"id": "s2_idea", "scene": "s2_idea.py:S2Idea", "fade_in": 0.35},
+    {"id": "end", "scene": "end.py:End", "dur": 4.5}
+  ],
+  "music": {
+    "gain_db": -9,
+    "global": ["cinematic underscore", "instrumental", "felt piano", "warm strings", "documentary score", "clean modern mix"],
+    "negative": ["vocals", "choir", "lyrics", "drum kit", "EDM drop", "distorted guitar"],
+    "moods": {
+      "s1_hook": ["solo felt piano", "sparse curious motif", "very quiet"],
+      "title": ["soft swell", "low strings enter"],
+      "s2_idea": ["piano arpeggios", "slow build of wonder"],
+      "end": ["final warm chord", "gentle fade to silence"]
+    },
+    "library": {"level_lufs": -20, "xfade": 2.5, "cues": [{"file": "assets/music/track.mp3", "in": 0}]}
+  },
+  "inserts": {},
+  "overlays": [],
+  "captions": {"font": "Avenir Next", "fontsdir": "/System/Library/Fonts"}
+}

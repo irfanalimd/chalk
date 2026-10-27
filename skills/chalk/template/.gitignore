@@ -1,0 +1,7 @@
+.env
+.venv/
+build/
+clips/
+__pycache__/
+*.mp4
+!assets/**/*.mp4

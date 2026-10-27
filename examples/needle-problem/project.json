@@ -1,0 +1,48 @@
+{
+  "title": "The Needle Problem",
+  "bg": "#0B0D12",
+  "beats": [
+    {"id": "s1_puzzle", "scene": "s1_puzzle.py:S1Puzzle"},
+    {"id": "title", "scene": "title.py:Title", "dur": 2.8},
+    {"id": "s2_area", "scene": "s2_area.py:S2Area", "fade_in": 0.35},
+    {"id": "s3_conjecture", "scene": "s3_conjecture.py:S3Conjecture"},
+    {"id": "s4_waves", "scene": "s4_waves.py:S4Waves"},
+    {"id": "s5_result", "scene": "s5_result.py:S5Result"},
+    {"id": "s6_close", "scene": "s6_close.py:S6Close"},
+    {"id": "end", "scene": "end.py:End", "dur": 4.5}
+  ],
+  "music": {
+    "gain_db": -9,
+    "global": ["cinematic underscore", "instrumental", "felt piano", "warm strings", "documentary score",
+               "intimate and wondrous", "clean modern mix", "68 bpm"],
+    "negative": ["vocals", "choir", "lyrics", "drums kit", "EDM drop", "distorted guitar", "harsh"],
+    "moods": {
+      "s1_puzzle": ["solo felt piano", "sparse curious motif", "music-box delicacy", "very quiet"],
+      "title": ["soft swell", "low strings enter", "gentle cymbal swell", "resolves on a warm chord"],
+      "s2_area": ["playful pizzicato strings", "piano arpeggios", "mysterious", "light and curious"],
+      "s3_conjecture": ["sustained string pad", "slow build of wonder", "piano motif returns", "deepening"],
+      "s4_waves": ["pulsing arpeggiated synth under piano", "rising tension", "flowing ostinato", "builds steadily"],
+      "s5_result": ["emotional swell", "full strings", "soft cinematic percussion", "triumphant but restrained", "climax"],
+      "s6_close": ["reflective", "strings recede", "solo piano returns with the opening motif", "hopeful"],
+      "end": ["final warm chord", "gentle fade to silence"]
+    },
+    "library": {
+      "level_lufs": -20, "xfade": 2.5,
+      "cues": [{"file": "assets/music/Clean_Soul.mp3", "in": 0},
+               {"file": "assets/music/Inspired.mp3", "in": 0, "at_beat": "s5_result"}]
+    }
+  },
+  "inserts": {
+    "hongwang": {
+      "credit": "Simons Foundation, “2026 Fields Medal: Hong Wang”",
+      "source_url": "https://www.youtube.com/watch?v=mTPyjR3qmTA",
+      "box": {"center": [3.45, -0.35], "width": 6.4},
+      "shots": [["clips/fields_hongwang.mp4", 254.0, 257.7, "crop=iw*0.79:ih*0.79:iw*0.105:ih*0.035"],
+                ["clips/fields_hongwang.mp4", 135.15, 138.95, "crop=iw*0.76:ih*0.76:iw*0.12:0"]]
+    }
+  },
+  "overlays": [
+    {"beat": "s3_conjecture", "insert": "hongwang", "start": 24.10, "end": 31.98, "fade": 0.45, "radius": 11}
+  ],
+  "captions": {"font": "Avenir Next", "fontsdir": "/System/Library/Fonts"}
+}
