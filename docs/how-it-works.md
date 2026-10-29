@@ -7,8 +7,9 @@ step yourself.
 
 1. **Script.** Claude reads the source and its primary material (the paper, code, release notes), asks
    a few questions, and writes a script and storyboard for you to approve.
-2. **Voice.** ElevenLabs reads the script and returns word timestamps. Pauses are added and stray sounds
-   at the ends of takes are trimmed, without generating the speech again.
+2. **Voice.** ElevenLabs reads the script and returns word timestamps. Without a key, the local Kokoro
+   voice reads it instead and speech recognition times the words. Pauses are added and stray sounds at
+   the ends of takes are trimmed, without generating the speech again.
 3. **Scenes.** Each section of the script gets its own Manim scene. Animations are tied to the words
    they go with, not to typed-in times, so they stay in sync if the narration changes. In long mode,
    several `scene-builder` agents can build scenes in parallel.
@@ -76,3 +77,6 @@ versions/vN/            delivered versions
 - **Music generation fails with 401.** The ElevenLabs key lacks music generation. Ask for library music
   instead (`music.py --library`).
 - **Using a key per project.** Instead of exporting `ELEVENLABS_API_KEY`, put it in the project's `.env`.
+- **Choosing the local voice.** In `script/narration.json`, set `"local_voice"` to any Kokoro voice
+  (`af_heart` is the default; `am_michael` is a good male voice) and `"local_speed"` to adjust the pace.
+  Set `"engine": "local"` to use it even when you have a key.

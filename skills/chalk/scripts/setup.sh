@@ -14,7 +14,7 @@ cd "$PROJECT"
 [ -d .venv ] || uv venv --python 3.12 .venv
 # Pillow < 11.3: newer Pillow breaks Manim CE 0.22's ImageMobject rendering.
 uv pip install --python .venv/bin/python manim opentimelineio faster-whisper requests python-dotenv \
-  pymupdf shapely "pillow<11.3"
+  pymupdf shapely kokoro-onnx "pillow<11.3"
 
 # CMU Serif (Computer Modern, the classic maths typeface). Manim's Text needs no LaTeX with this.
 mkdir -p assets/fonts
@@ -24,4 +24,4 @@ done
 
 [ -f .env ] || { cp .env.example .env 2>/dev/null || printf 'ELEVENLABS_API_KEY=\n' > .env; }
 chmod 600 .env
-echo "ready: $PROJECT  (put the ElevenLabs key in .env)"
+echo "ready: $PROJECT  (optional: put an ElevenLabs key in .env for a more natural voice)"

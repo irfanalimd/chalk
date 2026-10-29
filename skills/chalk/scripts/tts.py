@@ -1,9 +1,14 @@
-"""Narration: ElevenLabs TTS per section (cached raw takes), then a deterministic audio edit.
+"""Narration: TTS per section (cached raw takes), then a deterministic audio edit.
+
+Uses ElevenLabs when ELEVENLABS_API_KEY is set (in the environment or .env). Without a key it falls back
+to Kokoro, a free voice that runs locally; whisper then times its words. narration.json "engine"
+("elevenlabs" or "local") forces one; "local_voice" (default af_heart, e.g. am_michael for a male voice)
+and "local_speed" tune the local voice. The local model (~350 MB) is downloaded on first use.
 
     python tts.py                 # synthesize sections whose text/voice changed, then re-edit all
     python tts.py --force [ids]   # resynthesize every section (or only the listed ones)
 
-Raw takes:   build/audio/raw/<id>.mp3  + build/raw_timing.json  (character-aligned word times)
+Raw takes:   build/audio/raw/<id>.mp3 (.wav for the local voice) + build/raw_timing.json  (word times)
 Edited:      build/audio/<id>.wav      + build/timing.json      (what scenes and assembly use)
 
 The edit never regenerates speech, so an approved performance stays exactly as it was:
@@ -12,7 +17,8 @@ The edit never regenerates speech, so an approved performance stays exactly as i
   * pauses — narration.json "pauses" inserts silence after a phrase, at the quietest point of the gap
     between words, and shifts every later word time so cues stay locked to speech.
 """
-import base64, hashlib, json, os, re, subprocess, sys
+import base64, difflib, hashlib, json, os, re, shutil, subprocess, sys
+from pathlib import Path
 
 import numpy as np
 import requests
@@ -27,6 +33,10 @@ OUT = ROOT / "build/audio"
 RAW.mkdir(parents=True, exist_ok=True)
 FFMPEG = ffmpeg()
 SR = 44100
+ENGINE = CFG.get("engine") or ("elevenlabs" if os.environ.get("ELEVENLABS_API_KEY") else "local")
+KOKORO = Path.home() / ".cache/chalk/kokoro"
+KOKORO_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/"
+_kokoro = None
 
 
 def key(w):
@@ -66,6 +76,77 @@ def synth(i, sec):
     d = r.json()
     (RAW / f"{sec['id']}.mp3").write_bytes(base64.b64decode(d["audio_base64"]))
     return words_from_alignment(d["alignment"])
+
+
+def kokoro():
+    global _kokoro
+    if _kokoro is None:
+        import espeakng_loader
+        from kokoro_onnx import Kokoro
+        from kokoro_onnx.config import EspeakConfig
+        KOKORO.mkdir(parents=True, exist_ok=True)
+        for f in ("kokoro-v1.0.onnx", "voices-v1.0.bin"):
+            if not (KOKORO / f).exists():
+                print(f"downloading the local voice model ({f})")
+                with requests.get(KOKORO_URL + f, stream=True, timeout=60) as r:
+                    r.raise_for_status()
+                    with open(KOKORO / (f + ".part"), "wb") as out:
+                        shutil.copyfileobj(r.raw, out)
+                (KOKORO / (f + ".part")).rename(KOKORO / f)
+        data = espeakng_loader.get_data_path()
+        if len(data) > 150:  # espeak-ng silently ignores longer data paths and fails to find its files
+            short = KOKORO / "espeak-ng-data"
+            if not short.exists():
+                shutil.copytree(data, short)
+            data = str(short)
+        _kokoro = Kokoro(str(KOKORO / "kokoro-v1.0.onnx"), str(KOKORO / "voices-v1.0.bin"),
+                         espeak_config=EspeakConfig(espeakng_loader.get_library_path(), data))
+    return _kokoro
+
+
+def align(path, text):
+    """Word times for the script's words, from whisper's word timestamps on the synthesized audio."""
+    from asr import transcribe
+    heard = [w for seg in transcribe(path, words=True) for w in seg.words]
+    script = text.split()
+    times = [None] * len(script)
+    a, s = [key(w.word) for w in heard], [key(w) for w in script]
+    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, s, autojunk=False).get_opcodes():
+        if op == "equal" or (op == "replace" and i2 - i1 == j2 - j1):
+            for k in range(j2 - j1):
+                times[j1 + k] = (heard[i1 + k].start, heard[i1 + k].end)
+        elif op == "replace":  # split or merged words: spread the heard span over the script words
+            t0, t1, n = heard[i1].start, heard[i2 - 1].end, j2 - j1
+            for k in range(n):
+                times[j1 + k] = (t0 + (t1 - t0) * k / n, t0 + (t1 - t0) * (k + 1) / n)
+    dur = len(decode(path)) / SR
+    j = 0
+    while j < len(script):  # words whisper missed: share the gap between their neighbours
+        if times[j] is not None:
+            j += 1
+            continue
+        k = j
+        while k < len(script) and times[k] is None:
+            k += 1
+        t0 = times[j - 1][1] if j else 0.0
+        t1 = times[k][0] if k < len(script) else dur
+        for m in range(j, k):
+            times[m] = (t0 + (t1 - t0) * (m - j) / (k - j), t0 + (t1 - t0) * (m - j + 1) / (k - j))
+        j = k
+    return [{"word": w, "start": t[0], "end": t[1], "key": key(w)} for w, t in zip(script, times)]
+
+
+def synth_local(sec):
+    a, sr = kokoro().create(sec["text"], voice=CFG.get("local_voice", "af_heart"),
+                            speed=CFG.get("local_speed", 1.0), lang="en-us")
+    out = RAW / f"{sec['id']}.wav"
+    subprocess.run([FFMPEG, "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", "-",
+                    "-c:a", "pcm_s16le", str(out)], input=a.astype(np.float32).tobytes(), check=True)
+    return align(out, sec["text"])
+
+
+def raw_take(sec_id):
+    return RAW / f"{sec_id}.{'wav' if ENGINE == 'local' else 'mp3'}"
 
 
 def decode(p):
@@ -138,15 +219,19 @@ def main():
     raw = json.loads(rpath.read_text()) if rpath.exists() else {"sections": {}}
     pauses = CFG.get("pauses", [])
     timing = {"lead_in": CFG["lead_in"], "tail": CFG["tail"], "sections": {}}
+    if ENGINE == "local":
+        print(f"no ElevenLabs key: using the local voice ({CFG.get('local_voice', 'af_heart')})")
     for i, sec in enumerate(CFG["sections"]):
-        h = hashlib.sha1(json.dumps([sec["text"], CFG["voice_id"], CFG["model_id"], CFG["voice_settings"]]).encode()).hexdigest()[:12]
+        voice = [CFG["voice_id"], CFG["model_id"], CFG["voice_settings"]] if ENGINE == "elevenlabs" \
+            else ["local", CFG.get("local_voice", "af_heart"), CFG.get("local_speed", 1.0)]
+        h = hashlib.sha1(json.dumps([sec["text"], *voice]).encode()).hexdigest()[:12]
         prev = raw["sections"].get(sec["id"])
         if (force and (not only or sec["id"] in only)) or not prev or prev.get("hash") != h \
-                or not (RAW / f"{sec['id']}.mp3").exists():
-            raw["sections"][sec["id"]] = {"hash": h, "words": synth(i, sec)}
+                or not raw_take(sec["id"]).exists():
+            raw["sections"][sec["id"]] = {"hash": h, "words": synth(i, sec) if ENGINE == "elevenlabs" else synth_local(sec)}
             print(f"synth   {sec['id']}")
         words = [dict(w) for w in raw["sections"][sec["id"]]["words"]]
-        a = decode(RAW / f"{sec['id']}.mp3")
+        a = decode(raw_take(sec["id"]))
         before = len(a) / SR
         a = clean_tail(a, words)
         trimmed = before - len(a) / SR

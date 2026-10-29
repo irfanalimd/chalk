@@ -33,14 +33,16 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv tool install yt-dlp
 ```
 
-**3. Add your ElevenLabs key.** Put this line in your shell profile (`~/.zshrc` or `~/.bashrc`):
+**3. Add an ElevenLabs key (optional).** Without a key, chalk narrates with Kokoro, a free voice that runs
+on your machine and downloads about 350 MB the first time. It sounds fine, but ElevenLabs voices are much
+more natural, so use a key if you have one. Put this line in your shell profile (`~/.zshrc` or `~/.bashrc`):
 
 ```
 export ELEVENLABS_API_KEY=your-key
 ```
 
 The key needs text-to-speech access. If it also has music generation, chalk can compose a score.
-Otherwise it uses library music.
+Otherwise, and when there's no key, it uses library music.
 
 That's it. Each video gets its own folder with its own Python environment, and Claude sets it up
 whenever you ask for a new video.

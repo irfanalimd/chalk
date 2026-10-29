@@ -17,6 +17,14 @@ for continuity, caches raw takes in `build/audio/raw/`, then writes edited WAVs 
 - After synthesis run ASR over each section and compare with the script; fix spelling in the text
   (not phonetic hacks) unless a name is mispronounced.
 
+## Local voice (no key)
+
+Without `ELEVENLABS_API_KEY`, `tts.py` uses Kokoro (`kokoro-onnx`, installed by `setup.sh`; the
+~350 MB model downloads to `~/.cache/chalk/kokoro` on first use) and times words with whisper. It is
+clear but less natural than ElevenLabs, so tell the user a key would sound better. narration.json:
+`"local_voice"` (default `af_heart`, `am_michael` for a male voice), `"local_speed"`, and
+`"engine": "local"` to force it even when a key is set. Use library music in this case.
+
 ## Pauses and tail clean-up
 
 - `pauses` in narration.json: `{"section": "s3_x", "after": "it lives in", "sec": 0.6}`. Silence is

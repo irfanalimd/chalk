@@ -45,8 +45,12 @@ directory, or set `CHALK_PROJECT`). Read the reference for a stage before doing 
    section) and show the user the narration before generating any audio or rendering anything.
 4. **Scaffold and set up.** `python scripts/new_project.py <dir>` then `bash scripts/setup.sh <dir>`.
    Put the API key in `<dir>/.env` (never in a script or command line). Fill `project.json` beats and
-   `script/narration.json` sections from the approved script.
-5. **Voice.** `python scripts/tts.py`. Check names with ASR (`asr.py`) before building on the audio.
+   `script/narration.json` sections from the approved script. The key is optional: without one, tell
+   the user the narration will use the free local voice (Kokoro) and that an ElevenLabs key sounds more
+   natural, then carry on; use library music (`music.py --library`) in that case.
+5. **Voice.** `python scripts/tts.py` (ElevenLabs with a key, otherwise the local voice; for a male local
+   voice set `"local_voice": "am_michael"` in `narration.json`). Check names with ASR (`asr.py`) before
+   building on the audio.
 6. **Scenes.** Write `scenes/style.py` adjustments first if the palette changes, then one Manim scene
    per beat. For more than two narrated scenes, brief one `scene-builder` agent per scene (or group)
    and run them in parallel; review every result on a contact sheet (`sheet.py`) and send fixes back.
