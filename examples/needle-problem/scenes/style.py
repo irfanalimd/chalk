@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]  # project root (scenes/ lives inside
 for f in (ROOT / "assets/fonts").glob("*.otf"):
     manimpango.register_font(str(f))
 
-# ── palette (3Blue1Brown-derived, slightly warmer) ─────────────────────────────
+# ── palette (cool accents on a dark canvas, slightly warm) ────────────────────
 BG = "#0B0D12"
 INK = "#ECE8E1"        # primary text
 MUTED = "#8A8F98"      # secondary text

@@ -12,7 +12,7 @@ goal is to convey how significant the result is, not to teach every detail.
 
 Length: 2 to 2.5 minutes.
 
-Style: 3Blue1Brown. A dark canvas, precise animated geometry, calm motion, CMU Serif for display
+Style: a dark canvas, precise animated geometry, calm motion, CMU Serif for display
 type. Production quality should feel expensive: clean typography, consistent colour, deliberate
 camera moves, nothing cluttered or clipped.
 

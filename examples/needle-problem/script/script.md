@@ -1,6 +1,6 @@
 # The Needle Problem — script (as produced)
 
-Target: ~2:30 (delivered 2:43 with pauses) · narrator: ElevenLabs "George" (warm British, professorial) · 1080p60 · 3Blue1Brown-style dark canvas
+Target: ~2:30 (delivered 2:43 with pauses) · narrator: ElevenLabs "George" (warm British, professorial) · 1080p60 · dark canvas
 
 Narration rules: speak like a university professor explaining to a curious friend. Flowing sentences of
 varied length, no dramatic fragments, no lists of statistics, years only where they carry the story.

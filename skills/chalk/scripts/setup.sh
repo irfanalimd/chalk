@@ -16,7 +16,7 @@ cd "$PROJECT"
 uv pip install --python .venv/bin/python manim opentimelineio faster-whisper requests python-dotenv \
   pymupdf shapely "pillow<11.3"
 
-# CMU Serif (the Computer Modern face 3Blue1Brown uses). Manim's Text needs no LaTeX with this.
+# CMU Serif (Computer Modern, the classic maths typeface). Manim's Text needs no LaTeX with this.
 mkdir -p assets/fonts
 for f in cmunrm cmunti cmunbx cmunrb cmunbi; do
   [ -f "assets/fonts/$f.otf" ] || curl -sfL -o "assets/fonts/$f.otf" "https://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/$f.otf"

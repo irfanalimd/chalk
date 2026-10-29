@@ -63,3 +63,16 @@ versions/vN/            delivered versions
   library of ready-made scenes.
 - Whether you can use a third-party clip is your call. chalk records where each one came from and
   credits it on screen.
+
+## Troubleshooting
+
+- **No ffmpeg with libass found.** Captions need an ffmpeg built with libass. Homebrew's `ffmpeg-full`
+  and Ubuntu's `ffmpeg` both have it. To use a different build, set `CHALK_FFMPEG=/path/to/ffmpeg`.
+- **Captions use the wrong font on Linux.** The default caption font is Avenir Next, which ships with
+  macOS. Put a font file in the project's `assets/fonts/` and name it in `project.json`:
+  `"captions": {"font": "Inter", "fontsdir": "<project>/assets/fonts"}`.
+- **Renders run out of memory.** 1080p scenes are heavy, and several may render at once. On a machine
+  with 8 GB of RAM or less, add swap or ask Claude to render one scene at a time.
+- **Music generation fails with 401.** The ElevenLabs key lacks music generation. Ask for library music
+  instead (`music.py --library`).
+- **Using a key per project.** Instead of exporting `ELEVENLABS_API_KEY`, put it in the project's `.env`.

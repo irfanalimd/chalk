@@ -29,7 +29,7 @@ optional flourishes conditional on the time left (`room = c.at("turn it") - self
 ## House style
 
 - Background `#0B0D12`, faint grid; the hero object (here the gold needle) keeps one colour all film.
-- 3Blue1Brown palette: BLUE `#58C4DD`, TEAL `#5CD0B3`, GREEN `#83C167`, RED `#FC6255`, gold `#FFD45A`.
+- Palette: BLUE `#58C4DD`, TEAL `#5CD0B3`, GREEN `#83C167`, RED `#FC6255`, gold `#FFD45A`.
 - Type: CMU Serif for display (`serif()`), Avenir Next for labels (`sans()`, `eyebrow()` for tracked
   small caps, `chip()` for pill labels). `credit()` for small source lines.
 - `glow()` for soft bloom, `make_needle()` style hero objects with a distinguishable tip so rotations read.

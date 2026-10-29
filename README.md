@@ -1,7 +1,7 @@
 # chalk
 
 chalk is a Claude Code plugin that turns a paper, blog post or announcement into a narrated explainer
-video in the style of 3Blue1Brown. You give it a link. It writes the script, animates it with Manim,
+video with clean, animated math graphics. You give it a link. It writes the script, animates it with Manim,
 records the narration with an ElevenLabs voice, adds music and captions, and renders a 1080p video.
 It can also make a simple web page to host the video.
 
@@ -9,15 +9,41 @@ It works on macOS and Linux.
 
 ## Install
 
-In Claude Code:
+**1. Add the plugin** in Claude Code:
 
 ```
 /plugin marketplace add irfanalimd/chalk
 /plugin install chalk@chalk
 ```
 
-You also need ffmpeg, a few system libraries and an ElevenLabs API key. [docs/install.md](docs/install.md)
-walks through both platforms.
+**2. Install the tools.** chalk needs ffmpeg, cairo, pango and `uv`, plus `yt-dlp` if you use video clips.
+You don't need LaTeX.
+
+On macOS:
+
+```
+brew install ffmpeg-full uv yt-dlp pkg-config cairo pango
+```
+
+On Ubuntu or Debian:
+
+```
+sudo apt install ffmpeg build-essential pkg-config libcairo2-dev libpango1.0-dev
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv tool install yt-dlp
+```
+
+**3. Add your ElevenLabs key.** Put this line in your shell profile (`~/.zshrc` or `~/.bashrc`):
+
+```
+export ELEVENLABS_API_KEY=your-key
+```
+
+The key needs text-to-speech access. If it also has music generation, chalk can compose a score.
+Otherwise it uses library music.
+
+That's it. Each video gets its own folder with its own Python environment, and Claude sets it up
+whenever you ask for a new video.
 
 ## Make a video
 
@@ -63,6 +89,6 @@ The `examples/` folder has the full source (script, narration settings and every
 
 ## More
 
-- [Installation](docs/install.md) for macOS and Linux
-- [How it works](docs/how-it-works.md): the pipeline, running steps by hand, project layout and limits
+- [How it works](docs/how-it-works.md): the pipeline, running steps by hand, project layout, limits
+  and troubleshooting
 - [A reusable brief](docs/brief.md) you can paste into a project's `CLAUDE.md`

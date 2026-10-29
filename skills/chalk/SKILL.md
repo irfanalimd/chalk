@@ -1,6 +1,6 @@
 ---
 name: chalk
-description: Produce a narrated, 3Blue1Brown-style explainer video (Manim animation, ElevenLabs voice and music, real footage inserts, word-timed captions) about a research result, announcement, paper or technical idea, from source links to a finished 1080p60 MP4 and an optional web page. Two modes - short (2-3 min, "how big is this") and long (8-10 min guided reading of a whole paper, triggered by "long", "deep dive", "full paper" or an 8-10 minute target). Use when someone asks for an explainer video, a math/science/AI breakthrough video, a "3b1b-style" animation with narration, or wants to turn a paper, blog post or announcement into a video.
+description: Produce a narrated, animated explainer video (Manim animation, ElevenLabs voice and music, real footage inserts, word-timed captions) about a research result, announcement, paper or technical idea, from source links to a finished 1080p60 MP4 and an optional web page. Two modes - short (2-3 min, "how big is this") and long (8-10 min guided reading of a whole paper, triggered by "long", "deep dive", "full paper" or an 8-10 minute target). Use when someone asks for an explainer video, a math/science/AI breakthrough video, a math-style animation with narration, or wants to turn a paper, blog post or announcement into a video.
 ---
 
 # chalk

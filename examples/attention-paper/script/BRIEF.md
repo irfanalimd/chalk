@@ -1,6 +1,6 @@
 # Scene brief — "Attention Is All You Need", a guided reading (≈9.5 min, long mode)
 
-You are building Manim Community scenes for a 3Blue1Brown-style explainer of Vaswani et al. (2017).
+You are building Manim Community scenes for an animated explainer of Vaswani et al. (2017).
 Project root: `~/videos/attention-paper`. Audience: people with a basic STEM degree. Quality bar: a
 premium documentary — precise, calm, uncluttered, nothing clipped, every frame intentional.
 
